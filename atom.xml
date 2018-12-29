@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-12-25T09:09:16.109Z</updated>
+  <updated>2018-12-29T10:50:33.032Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何根据「平级结构」的集合构建「树形结构」</title>
+    <link href="http://yoursite.com/2018/12/29/build-a-tree-from-a-flat-structure/"/>
+    <id>http://yoursite.com/2018/12/29/build-a-tree-from-a-flat-structure/</id>
+    <published>2018-12-28T16:00:00.000Z</published>
+    <updated>2018-12-29T10:50:33.032Z</updated>
+    
+    <content type="html"><![CDATA[<p>在数据库设计的一些场景里面，我们经常把一些树形结构的数据设计成平级结构。比如，菜单是一个典型的树形结构。每个菜单有一个父菜单，同时可以有多个子菜单。设计菜单数据库的时候，我们会给每个菜单定义一个parentId的字段，用来指定它的父菜单。一个parentId字段就可以表达菜单的父子关系了。因为数据库都是行列式的存储，这样的数据就相当于平级结构。而通过parentId这样的设计，我们就可以使用平级结构的数据来存储树状结构的数据。这种设计很常用，比如一个电商里面的分类表，一个OA系统里面的组织结构表，都是类似的树形结构。</p><p>存储数据的时候，我们会把树形结构的数据转化成平级结构。反过来，当我们查询数据的时候，通常又要把平级结构转回树状结构。比如很多前端UI框架里面，构建一个树组件的时候，都需要提供一个树形结构的数据。</p><p>如何高效的把平级结构数据转化成树形结构呢？</p><a id="more"></a><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在数据库设计的一些场景里面，我们经常把一些树形结构的数据设计成平级结构。比如，菜单是一个典型的树形结构。每个菜单有一个父菜单，同时可以有多个子菜单。设计菜单数据库的时候，我们会给每个菜单定义一个parentId的字段，用来指定它的父菜单。一个parentId字段就可以表达菜单的父子关系了。因为数据库都是行列式的存储，这样的数据就相当于平级结构。而通过parentId这样的设计，我们就可以使用平级结构的数据来存储树状结构的数据。这种设计很常用，比如一个电商里面的分类表，一个OA系统里面的组织结构表，都是类似的树形结构。</p><p>存储数据的时候，我们会把树形结构的数据转化成平级结构。反过来，当我们查询数据的时候，通常又要把平级结构转回树状结构。比如很多前端UI框架里面，构建一个树组件的时候，都需要提供一个树形结构的数据：<br>{<br>    id: 1,<br>    name: ‘根菜单’,<br>    children: [<br>        {id: 11, name: ‘子菜单一’},<br>        {id: 12, name: ‘子菜单二’},<br>    ]<br>}</p><p>而数据库里面的数据是这样的：<br>id  name        parentId<br>1   根菜单      null<br>11  子菜单一    1<br>12  子菜单二    1</p><p>这个怎么做呢？</p><h2 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h2><p>class Menu {<br>    private Integer id;<br>    private String name;<br>    private Integer parentId;<br>    private List<menu> children;</menu></p><pre><code>// getter and setter</code></pre><p>}</p><p>/*<em> 时间复杂度：O(n) </em>/<br>Menu buildTree(List<menu> menus) {<br>    Menu root = null;<br>    Map&lt;Integer, Menu&gt; lookup = new HashMap&lt;&gt;();</menu></p><pre><code>// 查找表，可以方便地根据id查询对应元素for (Menu m : menus) {    lookup.put(m.getId(), m);}// 将每个节点添加到它对应的父节点的childrenfor (Menu m : menus) {    Menu parent = map.get(m.getParentId());    if (parent != null) {        parent.getChildren().add(m);    }}// 返回根节点。通过它的childrend就可以遍历到所有的子节点。for (Menu m : menus) {    if (m.getParentId == null) {        root = m;        break;    }}return root;</code></pre><p>}</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在数据库设计的一些场景里面，我们经常把一些树形结构的数据设计成平级结构。比如，菜单是一个典型的树形结构。每个菜单有一个父菜单，同时可以有多个子菜单。设计菜单数据库的时候，我们会给每个菜单定义一个parentId的字段，用来指定它的父菜单。一个parentId字段就可以表达菜单的父子关系了。因为数据库都是行列式的存储，这样的数据就相当于平级结构。而通过parentId这样的设计，我们就可以使用平级结构的数据来存储树状结构的数据。这种设计很常用，比如一个电商里面的分类表，一个OA系统里面的组织结构表，都是类似的树形结构。&lt;/p&gt;
+&lt;p&gt;存储数据的时候，我们会把树形结构的数据转化成平级结构。反过来，当我们查询数据的时候，通常又要把平级结构转回树状结构。比如很多前端UI框架里面，构建一个树组件的时候，都需要提供一个树形结构的数据。&lt;/p&gt;
+&lt;p&gt;如何高效的把平级结构数据转化成树形结构呢？&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="后台开发" scheme="http://yoursite.com/categories/%E5%90%8E%E5%8F%B0%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="菜单设计" scheme="http://yoursite.com/tags/%E8%8F%9C%E5%8D%95%E8%AE%BE%E8%AE%A1/"/>
+    
+      <category term="数据库" scheme="http://yoursite.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
   
   <entry>
     <title>使用hexo在github pages上面创建个人博客</title>

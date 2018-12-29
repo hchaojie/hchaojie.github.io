@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>如何根据「平级结构」的集合构建「树形结构」 | 青山白云梦</title>
+  
+  <meta name="keywords" content="博客,Java,培训,黄超杰,hchaojie">
+  
+  
+  <meta name="description" content="黄超杰的web笔记">
+  
+
+  <link rel="alternate" href="/atom.xml" title="青山白云梦">
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- link -->
+  
+
+  <!-- meta -->
+  
+
+  <!-- style.css -->
+  
+  <link rel="stylesheet" href="/style.css">
+  
+
+  <!-- fontawesome -->
+  
+  <link rel="stylesheet" href="/fontawesome-free-5.6.3-web/css/all.min.css">
+  
+
+  
+
+  <link href="https://cdn.jsdelivr.net/npm/node-waves@0.7.5/dist/waves.min.css" rel="stylesheet">
+
+  
+  
+</head>
+
+<body>
+    <header class="l_header material">
+	<div class="wrapper">
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href="/">
+        
+          青山白云梦
+        
+      </a>
+			<div class="menu">
+				<ul class="h-list">
+          
+  					
+  						<li>
+								<a id="home" class="nav flat-box" href="/">
+									<i class="fas fa-home fa-fw"></i>&nbsp;主页
+								</a>
+							</li>
+      			
+  						<li>
+								<a id="archives" class="nav flat-box" href="/archives/">
+									<i class="fas fa-archive fa-fw"></i>&nbsp;归档
+								</a>
+							</li>
+      			
+  						<li>
+								<a id="about" class="nav flat-box" href="/about/">
+									<i class="fas fa-user fa-fw"></i>&nbsp;关于
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索">
+						<span class="icon"><i class="fas fa-search fa-fw"></i></span>
+					</form>
+				</div>
+			
+			<ul class="switcher h-list">
+				
+					<li class="s-search"><a class="fas fa-search fa-fw" href="javascript:void(0)"></a></li>
+				
+				<li class="s-menu"><a class="fas fa-bars fa-fw" href="javascript:void(0)"></a></li>
+			</ul>
+		</div>
+
+		<div class="nav-sub container container--flex">
+			<a class="logo flat-box"></a>
+			<ul class="switcher h-list">
+				<li class="s-comment"><a class="flat-btn fas fa-comments fa-fw" href="javascript:void(0)"></a></li>
+				<li class="s-top"><a class="flat-btn fas fa-arrow-up fa-fw" href="javascript:void(0)"></a></li>
+				<li class="s-toc"><a class="flat-btn fas fa-list fa-fw" href="javascript:void(0)"></a></li>
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu">
+      <ul>
+          
+              
+                  <li>
+										<a id="home" class="nav flat-box" href="/">
+											<i class="fas fa-home fa-fw"></i>&nbsp;主页
+										</a>
+                  </li>
+              
+                  <li>
+										<a id="archives" class="nav flat-box" href="/archives/">
+											<i class="fas fa-archive fa-fw"></i>&nbsp;归档
+										</a>
+                  </li>
+              
+                  <li>
+										<a id="about" class="nav flat-box" href="/about/">
+											<i class="fas fa-user fa-fw"></i>&nbsp;关于
+										</a>
+                  </li>
+              
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+
+    <div class="l_body">
+    <div class='container clearfix'>
+        <div class='l_main'>
+            <div class="article-cover" style="background-image:url(https://siyuanlau.github.io/img/random/material-7.png);">
+    <p class="article-headline-p">
+        <a href="/2018/12/29/build-a-tree-from-a-flat-structure/">如何根据「平级结构」的集合构建「树形结构」</a>
+    </p>
+</div>
+<article id="post" class="post white-box article-type-post" itemscope="" itemprop="blogPost">
+  
+<section class="meta">
+  <div class="meta" id="header-meta">
+    
+      <time class="time">
+        <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+        2018-12-29
+      </time>
+    
+
+    
+      
+    
+    <div class="cats">
+        <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
+        <a class="categories" href="/categories/后台开发/">后台开发</a>
+    </div>
+
+
+    
+
+    
+      
+        <div class="browse busuanzi"><i class="fas fa-eye fa-fw" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+        </div>
+      
+    
+
+  </div>
+</section>
+
+    <section class="article typo">
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>在数据库设计的一些场景里面，我们经常把一些树形结构的数据设计成平级结构。比如，菜单是一个典型的树形结构。每个菜单有一个父菜单，同时可以有多个子菜单。设计菜单数据库的时候，我们会给每个菜单定义一个parentId的字段，用来指定它的父菜单。一个parentId字段就可以表达菜单的父子关系了。因为数据库都是行列式的存储，这样的数据就相当于平级结构。而通过parentId这样的设计，我们就可以使用平级结构的数据来存储树状结构的数据。这种设计很常用，比如一个电商里面的分类表，一个OA系统里面的组织结构表，都是类似的树形结构。</p>
+<p>存储数据的时候，我们会把树形结构的数据转化成平级结构。反过来，当我们查询数据的时候，通常又要把平级结构转回树状结构。比如很多前端UI框架里面，构建一个树组件的时候，都需要提供一个树形结构的数据。</p>
+<p>如何高效的把平级结构数据转化成树形结构呢？</p>
+<a id="more"></a>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在数据库设计的一些场景里面，我们经常把一些树形结构的数据设计成平级结构。比如，菜单是一个典型的树形结构。每个菜单有一个父菜单，同时可以有多个子菜单。设计菜单数据库的时候，我们会给每个菜单定义一个parentId的字段，用来指定它的父菜单。一个parentId字段就可以表达菜单的父子关系了。因为数据库都是行列式的存储，这样的数据就相当于平级结构。而通过parentId这样的设计，我们就可以使用平级结构的数据来存储树状结构的数据。这种设计很常用，比如一个电商里面的分类表，一个OA系统里面的组织结构表，都是类似的树形结构。</p>
+<p>存储数据的时候，我们会把树形结构的数据转化成平级结构。反过来，当我们查询数据的时候，通常又要把平级结构转回树状结构。比如很多前端UI框架里面，构建一个树组件的时候，都需要提供一个树形结构的数据：<br>{<br>    id: 1,<br>    name: ‘根菜单’,<br>    children: [<br>        {id: 11, name: ‘子菜单一’},<br>        {id: 12, name: ‘子菜单二’},<br>    ]<br>}</p>
+<p>而数据库里面的数据是这样的：<br>id  name        parentId<br>1   根菜单      null<br>11  子菜单一    1<br>12  子菜单二    1</p>
+<p>这个怎么做呢？</p>
+<h2 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h2><p>class Menu {<br>    private Integer id;<br>    private String name;<br>    private Integer parentId;<br>    private List<menu> children;</menu></p>
+<pre><code>// getter and setter
+</code></pre><p>}</p>
+<p>/*<em> 时间复杂度：O(n) </em>/<br>Menu buildTree(List<menu> menus) {<br>    Menu root = null;<br>    Map&lt;Integer, Menu&gt; lookup = new HashMap&lt;&gt;();</menu></p>
+<pre><code>// 查找表，可以方便地根据id查询对应元素
+for (Menu m : menus) {
+    lookup.put(m.getId(), m);
+}
+
+// 将每个节点添加到它对应的父节点的children
+for (Menu m : menus) {
+    Menu parent = map.get(m.getParentId());
+
+    if (parent != null) {
+        parent.getChildren().add(m);
+    }
+}
+
+// 返回根节点。通过它的childrend就可以遍历到所有的子节点。
+for (Menu m : menus) {
+    if (m.getParentId == null) {
+        root = m;
+        break;
+    }
+}
+
+return root;
+</code></pre><p>}</p>
+
+        </div>
+        
+          <section class="meta" id="footer-meta">
+              <time class="time" itemprop="dateUpdated" datetime="2018-12-29T18:50:33+08:00" content="2018-12-29">
+                  <i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;本文最后更新于：2018-12-29
+              </time>
+              
+                  
+                  <div class="tags"><a class="tag" href="/tags/菜单设计/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>&nbsp;菜单设计</a></div> <div class="tags"><a class="tag" href="/tags/数据库/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>&nbsp;数据库</a></div>
+              
+          </section>
+        
+
+        
+            <div class="prev-next">
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一篇&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2018/12/25/build-blog-with-hexo-on-github-pages/" rel="prev" title="使用hexo在github pages上面创建个人博客">
+                                    
+                                        使用hexo在github pages上面创建个人博客
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/blog/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>blog</a> <a class="tag" href="/tags/Hexo/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Hexo</a> <a class="tag" href="/tags/github-pages/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>github pages</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+
+    </section>
+
+</article>
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+<br>
+
+<!-- 显示推荐文章和评论 -->
+
+    <article class="post white-box comments">
+        <section class="article typo">
+
+            
+                
+
+    <div class="recommended_posts">
+        <h4><i class="fas fa-bookmark fa-fw" aria-hidden="true"></i>&nbsp;你可能感兴趣的文章</h4>
+        <ul>
+            
+                <li><a href="http://yoursite.com/2018/12/25/build-blog-with-hexo-on-github-pages/">使用hexo在github pages上面创建个人博客</a></li>
+            
+        </ul>
+    </div>
+
+
+            
+
+            
+
+                <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+                
+
+                
+
+                
+            
+
+        </section>
+    </article>
+
+
+
+<script>
+    window.subData = {
+        title: '如何根据「平级结构」的集合构建「树形结构」',
+        tools: true
+    }
+</script>
+
+
+        </div>
+        <aside class='l_side'>
+            
+
+
+    
+    
+    
+    
+    
+        
+    <section class="toc-wrapper">
+        <header class="header material">
+            <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;目录</div>
+            <div class="wrapper"><a class="s-toc rightBtn" title="固定到顶部" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div>
+        </header>
+        <div class="content material">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方式"><span class="toc-text">解决方式</span></a></li></ol>
+        </div>
+    </section>
+
+
+    
+    
+    
+
+
+        </aside>
+    </div>
+    </div>
+    <footer id="footer" class="clearfix">
+    
+        <div class="social-wrapper">
+          
+              
+                  <a href="https://github.com/hchaojie" class="social fab fa-github flat-btn" target="_blank" rel="external"></a>
+              
+          
+              
+                  <a href="https://music.163.com/#/user/home?id=130963489" class="social fas fa-music flat-btn" target="_blank" rel="external"></a>
+              
+          
+        </div>
+    
+    <br>
+    <div>本站使用 <a href="https://hexo.io" target="_blank" class="codename">hexo</a> 构建，
+    使用 <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a> 作为主题。
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.5/dist/waves.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+<!-- 访问统计 -->
+<script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+<!-- fastclick -->
+<script src="https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    FastClick.attach(document.body)
+  }, false)
+</script>
+
+
+    <script>
+        var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+        var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+        var ALGOLIA_API_KEY = "";
+        var ALGOLIA_APP_ID = "";
+        var ALGOLIA_INDEX_NAME = "";
+        var AZURE_SERVICE_NAME = "";
+        var AZURE_INDEX_NAME = "";
+        var AZURE_QUERY_KEY = "";
+        var BAIDU_API_ID = "";
+        var SEARCH_SERVICE = "hexo" || "hexo";
+        var ROOT = "/"||"/";
+        if(!ROOT.endsWith('/'))ROOT += '/';
+    </script>
+
+
+
+
+  <script src="/js/app.js"></script>
+<script src="/js/search.js"></script>
+
+
+
+
+    
+    
+    
+
+
+
+
+<!-- leancloud_visitors -->
+
+
+</body>
+</html>

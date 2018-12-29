@@ -146,6 +146,66 @@
 <section class="post-list">
     
         <div class="post-wrapper">
+            <div class="article-cover" style="background-image:url(https://siyuanlau.github.io/img/random/material-7.png);">
+                <p class="article-headline-p">
+                    <a href="/2018/12/29/build-a-tree-from-a-flat-structure/">如何根据「平级结构」的集合构建「树形结构」</a>
+                </p>
+            </div>
+            <article class="post reveal ">
+    
+<section class="meta">
+  <div class="meta" id="header-meta">
+    
+      <time class="time">
+        <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+        2018-12-29
+      </time>
+    
+
+    
+      
+    
+    <div class="cats">
+        <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
+        <a class="categories" href="/categories/后台开发/">后台开发</a>
+    </div>
+
+
+    
+
+    
+
+  </div>
+</section>
+
+    <section class="article typo">
+        <p>在数据库设计的一些场景里面，我们经常把一些树形结构的数据设计成平级结构。比如，菜单是一个典型的树形结构。每个菜单有一个父菜单，同时可以有多个子菜单。设计菜单数据库的时候，我们会给每个菜单定义一个parentId的字段，用来指定它的父菜单。一个parentId字段就可以表达菜单的父子关系了。因为数据库都是行列式的存储，这样的数据就相当于平级结构。而通过parentId这样的设计，我们就可以使用平级结构的数据来存储树状结构的数据。这种设计很常用，比如一个电商里面的分类表，一个OA系统里面的组织结构表，都是类似的树形结构。</p>
+<p>存储数据的时候，我们会把树形结构的数据转化成平级结构。反过来，当我们查询数据的时候，通常又要把平级结构转回树状结构。比如很多前端UI框架里面，构建一个树组件的时候，都需要提供一个树形结构的数据。</p>
+<p>如何高效的把平级结构数据转化成树形结构呢？</p>
+        
+            <div class="readmore">
+                <a href="/2018/12/29/build-a-tree-from-a-flat-structure/" class="flat-box">
+                    <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
+                    阅读全文
+                </a>
+            </div>
+        
+
+        
+            <div class="full-width auto-padding tags">
+                
+                    <a href="/tags/菜单设计/"><i class="fas fa-hashtag fa-fw"></i>菜单设计</a>
+                
+                    <a href="/tags/数据库/"><i class="fas fa-hashtag fa-fw"></i>数据库</a>
+                
+            </div>
+        
+    </section>
+</article>
+
+        </div>
+    
+        <div class="post-wrapper">
             <div class="article-cover" style="background-image:url(https://siyuanlau.github.io/img/random/material-4.png);">
                 <p class="article-headline-p">
                     <a href="/2018/12/25/build-blog-with-hexo-on-github-pages/">使用hexo在github pages上面创建个人博客</a>
@@ -265,6 +325,8 @@
                 
                     <li><a class="flat-box" href="/categories/前端开发/"><div class="name">前端开发</div><div class="badge">(共1篇)</div></a></li>
                 
+                    <li><a class="flat-box" href="/categories/后台开发/"><div class="name">后台开发</div><div class="badge">(共1篇)</div></a></li>
+                
             </ul>
         
     </div>
@@ -278,7 +340,7 @@
             <div><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;标签</div>
         </header>
         <div class="content material">
-            <a href="/tags/Hexo/" style="font-size: 14px; color: #999">Hexo</a> <a href="/tags/blog/" style="font-size: 14px; color: #999">blog</a> <a href="/tags/github-pages/" style="font-size: 14px; color: #999">github pages</a>
+            <a href="/tags/Hexo/" style="font-size: 14px; color: #999">Hexo</a> <a href="/tags/blog/" style="font-size: 14px; color: #999">blog</a> <a href="/tags/github-pages/" style="font-size: 14px; color: #999">github pages</a> <a href="/tags/数据库/" style="font-size: 14px; color: #999">数据库</a> <a href="/tags/菜单设计/" style="font-size: 14px; color: #999">菜单设计</a>
         </div>
     </section>
 
